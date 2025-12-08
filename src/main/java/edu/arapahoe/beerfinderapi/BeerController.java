@@ -57,14 +57,14 @@ public class BeerController {
         List<Brewery> breweryList = breweryRepository.findAllByOrderByBreweryId();
         for (Brewery brewery : breweryList) {
             if (username.equals(brewery.getUsername()) && password.equals(brewery.getPassword())) {
-                response.sendRedirect("/api/breweryPage/" + brewery.getBreweryId());
+                response.sendRedirect("/api/breweries/" + brewery.getBreweryId());
                 return;
             }
         }
         response.sendRedirect("/api/beers");
     }
 
-    @GetMapping("/breweryPage/{breweryId}")
+    @GetMapping("/breweries/{breweryId}")
     List<Beer> getBreweryBeers(@PathVariable Integer breweryId) {
         List<Beer> tempList = beerRepository.findAllByOrderByBeerId();
         List<Beer> beerList = new ArrayList<>();
@@ -76,7 +76,7 @@ public class BeerController {
         return beerList;
     }
 
-    @PostMapping("/breweryPage/{breweryId}")
+    @PostMapping("/breweries/{breweryId}")
     public ResponseEntity<Void> createBeer(@PathVariable Integer breweryId,
                                         @RequestParam Integer beerId,
                                         @RequestParam String name,
@@ -96,7 +96,7 @@ public class BeerController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/breweryPage/{breweryId}")
+    @PutMapping("/breweries/{breweryId}")
     ResponseEntity<Void> updateBeer(@PathVariable Integer breweryId,
                                     @RequestParam Integer beerId,
                                     @RequestParam String name,
@@ -112,7 +112,7 @@ public class BeerController {
     }
 
 
-    @DeleteMapping("/breweryPage/{breweryId}")
+    @DeleteMapping("/breweries/{breweryId}")
     public ResponseEntity<Void> deleteBeer(@PathVariable Integer breweryId, @RequestParam Integer beerId) {
         var beer = beerRepository.findById(beerId).orElseThrow(()-> new BeerNotFoundException("Beer not found"));
         if (beer.getBrewery().getBreweryId() == breweryId) {
